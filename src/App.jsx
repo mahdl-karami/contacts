@@ -1,14 +1,39 @@
+// import libraryes
 import { useState } from "react";
+import { v4 as uuidV4 } from "uuid";
 import styled from "styled-components";
+// import components
 import FormBody from "./components/FormBody";
 import ContactList from "./components/ContactList";
 import Validation from "./components/Validation";
-import { v4 as uuidV4 } from "uuid";
+// creating styled components
 const Container = styled.div`
-  width: 800px;
+  width: calc(1000px + 4rem);
   height: auto;
-  margin: 0 auto;
+  margin: 2rem auto;
+  text-align: center;
+  color: #007bff;
+  a {
+    color: #007bff;
+    &:hover {
+      color: #0069da;
+    }
+    text-decoration: none;
+  }
+  h1 {
+    font-weight: bold;
+    margin: 2rem 0 1rem;
+  }
 `;
+const Badge = styled.h5`
+  display: inline;
+  background: #007bff40;
+  border-radius: 7px;
+  padding: 0 0.4rem;
+  margin: 0 0.2rem;
+`;
+
+// start main app
 export default function App() {
   // set states
   const [contact, setContact] = useState({
@@ -18,7 +43,7 @@ export default function App() {
     phoneNumber: "",
     id: uuidV4(),
   });
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState(true);
   const [contacts, setContacts] = useState([]);
   // set functions
   const changeHandler = ({ target: { name, value } }) => {
@@ -32,24 +57,30 @@ export default function App() {
       return;
     }
     setValid(true);
-    setContact((contact) => ({ ...contact, ["id"]: uuidV4() }));
     setContacts([...contacts, contact]);
-    console.log(contacts);
+    setContact({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      id: uuidV4(),
+    });
   };
   const delHandler = (id) => {
-    const newContacts = contacts.filter((contactsItem)=> contactsItem.id !== id );
+    const newContacts = contacts.filter((contactsItem) => contactsItem.id !== id);
     setContacts(newContacts);
   };
+  // returning app
   return (
     <Container>
       <h1>Contact List</h1>
-      <h4>
-        Deleloper{" "}
+      <h5>
+        Developer
         <a href="https://github.com/mahdl-karami" target="_blank" rel="noreferrer">
-          GitHub
-        </a>{" "}
+          <Badge>GitHub</Badge>
+        </a>
         Page
-      </h4>
+      </h5>
       <FormBody submitHandler={submitHandler} changeHandler={changeHandler} contact={contact} />
       <Validation valid={valid} />
 
